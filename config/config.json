@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/reactUnderStaning/ReactUnderStaningWebPart.manifest.json"
         }
       ]
+    },
+    "property-pane-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/propertyPane/PropertyPaneWebPart.js",
+          "manifest": "./src/webparts/propertyPane/PropertyPaneWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "FirstWebpartWebPartStrings": "lib/webparts/firstWebpart/loc/{locale}.js",
-    "ReactUnderStaningWebPartStrings": "lib/webparts/reactUnderStaning/loc/{locale}.js"
+    "ReactUnderStaningWebPartStrings": "lib/webparts/reactUnderStaning/loc/{locale}.js",
+    "PropertyPaneWebPartStrings": "lib/webparts/propertyPane/loc/{locale}.js"
   }
 }
