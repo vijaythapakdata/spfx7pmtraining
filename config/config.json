@@ -25,12 +25,21 @@
           "manifest": "./src/webparts/propertyPane/PropertyPaneWebPart.manifest.json"
         }
       ]
+    },
+    "functional-form-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/functionalForm/FunctionalFormWebPart.js",
+          "manifest": "./src/webparts/functionalForm/FunctionalFormWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "FirstWebpartWebPartStrings": "lib/webparts/firstWebpart/loc/{locale}.js",
     "ReactUnderStaningWebPartStrings": "lib/webparts/reactUnderStaning/loc/{locale}.js",
-    "PropertyPaneWebPartStrings": "lib/webparts/propertyPane/loc/{locale}.js"
+    "PropertyPaneWebPartStrings": "lib/webparts/propertyPane/loc/{locale}.js",
+    "FunctionalFormWebPartStrings": "lib/webparts/functionalForm/loc/{locale}.js"
   }
 }

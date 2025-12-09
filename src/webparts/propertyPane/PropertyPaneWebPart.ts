@@ -47,9 +47,9 @@ export default class PropertyPaneWebPart extends BaseClientSideWebPart<IProperty
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
-protected get disableReactivePropertyChanges():boolean{
-  return true
-}
+// protected get disableReactivePropertyChanges():boolean{
+//   return true
+// }
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
