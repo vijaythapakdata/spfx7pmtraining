@@ -11,6 +11,7 @@ declare interface ISampleFormWebPartStrings {
   AppOfficeEnvironment: string;
   AppOutlookEnvironment: string;
   UnknownEnvironment: string;
+  ListFieldLabel:string
 }
 
 declare module 'SampleFormWebPartStrings' {

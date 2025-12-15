@@ -49,6 +49,7 @@
     "ReactUnderStaningWebPartStrings": "lib/webparts/reactUnderStaning/loc/{locale}.js",
     "PropertyPaneWebPartStrings": "lib/webparts/propertyPane/loc/{locale}.js",
     "FunctionalFormWebPartStrings": "lib/webparts/functionalForm/loc/{locale}.js",
-    "SampleFormWebPartStrings": "lib/webparts/sampleForm/loc/{locale}.js"
+    "SampleFormWebPartStrings": "lib/webparts/sampleForm/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
   }
 }

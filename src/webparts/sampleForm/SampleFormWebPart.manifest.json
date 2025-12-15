@@ -22,7 +22,8 @@
     "description": { "default": "SampleForm description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "SampleForm"
+      "description": "SampleForm",
+      "ListName":""
     }
   }]
 }

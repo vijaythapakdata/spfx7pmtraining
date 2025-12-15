@@ -14,6 +14,7 @@ import { ISampleFormProps } from './components/ISampleFormProps';
 
 export interface ISampleFormWebPartProps {
   description: string;
+  ListName:string;
 }
 
 export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleFormWebPartProps> {
@@ -29,7 +30,10 @@ export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleForm
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName
+        userDisplayName: this.context.pageContext.user.displayName,
+        siteurl:this.context.pageContext.web.absoluteUrl,
+        context:this.context,
+        ListName:this.properties.ListName
       }
     );
 
@@ -110,6 +114,9 @@ export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleForm
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
+                }),
+                PropertyPaneTextField('ListName',{
+                  label:strings.ListFieldLabel
                 })
               ]
             }
