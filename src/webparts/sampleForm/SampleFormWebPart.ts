@@ -15,6 +15,7 @@ import { ISampleFormProps } from './components/ISampleFormProps';
 export interface ISampleFormWebPartProps {
   description: string;
   ListName:string;
+  cityOptions:string;
 }
 
 export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleFormWebPartProps> {
@@ -22,7 +23,8 @@ export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleForm
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
-  public render(): void {
+  public async render(): Promise<void> {
+    const cityopt=await this._getLookupItems();
     const element: React.ReactElement<ISampleFormProps> = React.createElement(
       SampleForm,
       {
@@ -33,7 +35,11 @@ export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleForm
         userDisplayName: this.context.pageContext.user.displayName,
         siteurl:this.context.pageContext.web.absoluteUrl,
         context:this.context,
-        ListName:this.properties.ListName
+        ListName:this.properties.ListName,
+        departmentOptions:await this._getChoiceItems(this.context.pageContext.web.absoluteUrl,this.properties.ListName,'Department'),
+        genderOptions:await this._getChoiceItems(this.context.pageContext.web.absoluteUrl,this.properties.ListName,'Gender'),
+        SkillsOptions:await this._getChoiceItems(this.context.pageContext.web.absoluteUrl,this.properties.ListName,'Skills'),
+        cityOptions:cityopt
       }
     );
 
@@ -124,5 +130,52 @@ export default class SampleFormWebPart extends BaseClientSideWebPart<ISampleForm
         }
       ]
     };
+  }
+  //common method for choice fields
+  private async _getChoiceItems(siteurl:String,ListName:string,fieldName:string):Promise<any>{
+    try{
+const response= await fetch(`${siteurl}/_api/web/lists/getbytitle('${ListName}')/fields?$filter=EntityPropertyName eq '${fieldName}'`,{
+  method:'GET',
+  headers:{
+    'Accept':'application/json;odata=nometadata'
+  }
+});
+if(!response.ok){
+  throw new Error(`Error fetching choice field data: ${response.status} ${response.statusText}`);
+}
+const data=await response.json();
+const choices=data.value[0].Choices;
+return choices.map((choice:any)=>({
+  key:choice,
+  text:choice
+}));
+    }
+    catch(err){
+console.error('Error fetching choice field data:',err);
+return[];
+    }
+  }
+  //looku method
+  private async _getLookupItems():Promise<any[]>{
+    try{
+const response=await fetch(`${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('Cities')/items?$select=Title,ID`,{
+  method:'GET',
+  headers:{
+    'Accept':'application/json;odata=nometadata'
+  }
+});
+if(!response.ok){
+  throw new Error(`Error fetching lookup field data: ${response.status} ${response.statusText}`);
+}
+const data=await response.json();
+return data.value.map((city:{Title:string,ID:string})=>({
+  key:city.ID,
+  text:city.Title
+}))
+    }
+    catch(err){
+console.error('Error fetching lookup field data:',err);
+return [];
+    }
   }
 }

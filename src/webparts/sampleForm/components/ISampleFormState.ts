@@ -9,5 +9,9 @@ export interface ISampleFormState{
     ManagerId:any[];
     Admin:any;
     AdminId:any;
+    Department:string;
+    City:any;
+    Gender:string;
+    Skills:any[]
 
 }

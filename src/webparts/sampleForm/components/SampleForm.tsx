@@ -8,7 +8,7 @@ import "@pnp/sp/items";
 import "@pnp/sp/lists";
 import { Dialog } from '@microsoft/sp-dialog';
 import {  PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
-import { PrimaryButton, Slider, TextField } from '@fluentui/react';
+import { ChoiceGroup, Dropdown, IDropdownOption, PrimaryButton, Slider, TextField } from '@fluentui/react';
 const SampleForm:React.FC<ISampleFormProps>=(props)=>{ /// Name ----[], Age=[], Salary=[],Email=[],FullAddress=[]
   const[formdata,setFormData]=useState<ISampleFormState>({
     Name:"",
@@ -20,7 +20,11 @@ const SampleForm:React.FC<ISampleFormProps>=(props)=>{ /// Name ----[], Age=[], 
     Manager:[],
     ManagerId:[],
     Admin:"",
-    AdminId:""
+    AdminId:"",
+    Skills:[],
+    Department:"",
+    Gender:"",
+    City:""
   });
   //get Manager
   const  _getManager=(items: any[]) =>{
@@ -48,7 +52,11 @@ const items=await listname.items.add({
   EmailAddress:formdata.Email,
   Score:formdata.Score,
   AdminId:formdata.AdminId,
-  ManagerId:{results:formdata.ManagerId}
+  ManagerId:{results:formdata.ManagerId},
+  Department:formdata.Department,
+  Gender:formdata.Gender,
+  Skills:{results:formdata.Skills},
+  CityId:formdata.City
 });
 Dialog.alert("data has been saved");
 console.log(items);
@@ -62,7 +70,11 @@ setFormData({
      Manager:[],
     ManagerId:[],
     Admin:"",
-    AdminId:""
+    AdminId:"",
+      Skills:[],
+    Department:"",
+    Gender:"",
+    City:""
 });
   }
   catch(err){
@@ -74,6 +86,12 @@ console.log(err);
 //form event 
 const handleChange=(fieldValue:keyof ISampleFormState,value:number|string|boolean):void=>{
   setFormData(prev=>({...prev,[fieldValue]:value}));
+}
+//multiselect dropdown
+const _getSkills=(event:React.FormEvent<HTMLDivElement>,options:IDropdownOption):void=>{
+const selectedkey=options.selected?[...formdata.Skills,options.key as string]:formdata.Skills.filter((key)=>key!==options.key);
+setFormData(prev=>({...prev,Skills:selectedkey}));
+
 }
   return(
     <>
@@ -129,6 +147,38 @@ const handleChange=(fieldValue:keyof ISampleFormState,value:number|string|boolea
     defaultSelectedUsers={formdata.Manager}
     resolveDelay={1000} 
     webAbsoluteUrl={props.siteurl}/>
+    {/* Chocice */}
+    <Dropdown
+    label='Department'
+    placeholder='--select--'
+    options={props.departmentOptions}
+    selectedKey={formdata.Department}
+    onChange={(_,e)=>handleChange("Department",e?.key as string)}
+    />
+     <Dropdown
+    label='City'
+    placeholder='--select--'
+    options={props.cityOptions}
+    selectedKey={formdata.City}
+    onChange={(_,e)=>handleChange("City",e?.key as string)}
+    />
+     <ChoiceGroup
+    label='Gender'
+    // placeholder='--select--'
+    options={props.genderOptions}
+    selectedKey={formdata.Gender}
+    onChange={(_,e)=>handleChange("Gender",e?.key as string)}
+    />
+     <Dropdown
+    label='Skills'
+    placeholder='--select--'
+    options={props.SkillsOptions}
+    // selectedKey={formdata.Department}
+    defaultSelectedKeys={formdata.Skills}
+    multiSelect
+    // onChange={(_,e)=>handleChange("Department",e?.key as string)}
+    onChange={_getSkills}
+    />
        <TextField
     label='Full Address'
     value={formdata.FullAddress}

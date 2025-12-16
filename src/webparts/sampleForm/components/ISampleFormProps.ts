@@ -9,5 +9,9 @@ export interface ISampleFormProps {
   siteurl:string;
   context:WebPartContext;
   ListName:string;
-  
+  departmentOptions:any; //single seleted dropdown
+  genderOptions:any; //radio button
+  SkillsOptions:any; //multi selected dropdown
+  cityOptions:any; //lookup
+   
 }
