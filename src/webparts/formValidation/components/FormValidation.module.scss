@@ -8,6 +8,19 @@
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
+  .lbl{
+    font-weight: bold;
+    // margin-top: 10px;
+    // display: block;
+    margin: 5px 5px 5px 5px;
+    color:var(--bodyText);
+    font-size: 15px;
+    color:"[theme:bodyText, default: #323130]";
+  }
+  .btn{
+    margin-left: 10px;
+    margin-top: 10px;
+  }
 }
 
 .welcome {

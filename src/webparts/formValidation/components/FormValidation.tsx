@@ -6,9 +6,13 @@ import { FormikService } from '../../../ServiceFile/service';
 // import FormikService from '../../../ServiceFile/service';
 import {sp} from "@pnp/sp/presets/all"
 import * as Yup from 'yup';
-import { FormikProps } from 'formik';
+import { DatePicker, Dropdown, Label, PrimaryButton, Stack, TextField } from '@fluentui/react';
+import { FormikProps ,Formik} from 'formik';
 import { Dialog } from '@microsoft/sp-dialog';
+import { PeoplePicker, PrincipalType } from '@pnp/spfx-controls-react/lib/PeoplePicker';
 // import { fill } from 'lodash';
+
+const stackTokens={childrenGap:10}
 const  FormValidation:React.FC<IFormValidationProps>=(props)=>{
   const [service,setService]=React.useState<ReturnType<typeof FormikService>|null>(null)
   React.useEffect(()=>{
@@ -57,7 +61,100 @@ console.log(err);
     }
   }
   return(
-    <></>
+    <>
+    <Formik
+    initialValues={{
+      name:"",
+      projectName:"",
+      emailAddress:"",
+      phoneNumber:"",
+      details:"",
+      startDate:null,
+      endDate:null
+    }}
+    validationSchema={validationForm}
+    onSubmit={(values,helpers)=>{
+      createRecord(values).then(()=>helpers.resetForm())
+    }}
+    
+    >
+{(formik:FormikProps<any>)=>(
+  <form onSubmit={formik.handleSubmit}>
+<div className={styles.formValidation}>
+
+<Stack tokens={stackTokens}>
+<Label className={styles.lbl}>User Name</Label>
+<PeoplePicker
+context={props.context as any}
+personSelectionLimit={1}
+disabled={true}
+principalTypes={[PrincipalType.User]}
+ensureUser={true}
+defaultSelectedUsers={[props.context.pageContext.user.displayName as any]}
+webAbsoluteUrl={props.siteurl}
+/>
+<Label className={styles.lbl}>Task Name</Label>
+<TextField
+{...getFieldProps(formik,'name')}
+/>
+<Label className={styles.lbl}>Email Address</Label>
+<TextField
+{...getFieldProps(formik,'emailAddress')}
+/>
+<Label className={styles.lbl}>Phone Number</Label>
+<TextField
+{...getFieldProps(formik,'phoneNumber')}
+/>
+<Label className={styles.lbl}>Project Name</Label>
+<Dropdown
+
+options={[
+  {key:"Project 1",text:"Project 1"},
+  {key:"Project 2",text:"Project 2"}
+]}
+selectedKey={formik.values.projectName}
+onChange={(_,option)=>formik.setFieldValue('projectName',option?.key)}
+errorMessage={formik.errors.projectName as string}
+/>
+<Label className={styles.lbl}>Start Date</Label>
+<DatePicker
+value={formik.values.startDate}
+textField={{...getFieldProps(formik,'startDate')}}
+onSelectDate={(date)=>formik.setFieldValue('startDate',date)}
+/>
+<Label className={styles.lbl}>End Date</Label>
+<DatePicker
+value={formik.values.endDate}
+textField={{...getFieldProps(formik,'endDate')}}
+onSelectDate={(date)=>formik.setFieldValue('endDate',date)}
+/>
+<Label className={styles.lbl}>Task Details</Label>
+<TextField
+{...getFieldProps(formik,'details')}
+multiline
+rows={5}
+/>
+</Stack>
+<PrimaryButton
+className={styles.btn}
+type='submit'
+text='Submit'
+iconProps={{iconName:'save'}}
+/>
+<PrimaryButton
+className={styles.btn}
+// type='submit'
+text='Cancel'
+iconProps={{iconName:'cancel'}}
+onClick={formik.handleReset as any}
+/>
+</div>
+  </form>
+)}
+
+      </Formik>
+    
+    </>
   )
 }
 export default  FormValidation;
