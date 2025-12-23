@@ -93,6 +93,8 @@ ensureUser={true}
 defaultSelectedUsers={[props.context.pageContext.user.displayName as any]}
 webAbsoluteUrl={props.siteurl}
 />
+</Stack>
+<Stack tokens={stackTokens} horizontal>
 <Label className={styles.lbl}>Task Name</Label>
 <TextField
 {...getFieldProps(formik,'name')}
@@ -105,7 +107,9 @@ webAbsoluteUrl={props.siteurl}
 <TextField
 {...getFieldProps(formik,'phoneNumber')}
 />
+</Stack>
 <Label className={styles.lbl}>Project Name</Label>
+<Stack tokens={stackTokens}>
 <Dropdown
 
 options={[

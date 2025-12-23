@@ -49,6 +49,14 @@
           "manifest": "./src/webparts/formValidation/FormValidationWebPart.manifest.json"
         }
       ]
+    },
+    "pagination-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pagination/PaginationWebPart.js",
+          "manifest": "./src/webparts/pagination/PaginationWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -59,6 +67,7 @@
     "FunctionalFormWebPartStrings": "lib/webparts/functionalForm/loc/{locale}.js",
     "SampleFormWebPartStrings": "lib/webparts/sampleForm/loc/{locale}.js",
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
-    "FormValidationWebPartStrings": "lib/webparts/formValidation/loc/{locale}.js"
+    "FormValidationWebPartStrings": "lib/webparts/formValidation/loc/{locale}.js",
+    "PaginationWebPartStrings": "lib/webparts/pagination/loc/{locale}.js"
   }
 }
