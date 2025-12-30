@@ -65,6 +65,14 @@
           "manifest": "./src/webparts/largeList/LargeListWebPart.manifest.json"
         }
       ]
+    },
+    "get-allusers-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/getAllusers/GetAllusersWebPart.js",
+          "manifest": "./src/webparts/getAllusers/GetAllusersWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -77,6 +85,7 @@
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
     "FormValidationWebPartStrings": "lib/webparts/formValidation/loc/{locale}.js",
     "PaginationWebPartStrings": "lib/webparts/pagination/loc/{locale}.js",
-    "LargeListWebPartStrings": "lib/webparts/largeList/loc/{locale}.js"
+    "LargeListWebPartStrings": "lib/webparts/largeList/loc/{locale}.js",
+    "GetAllusersWebPartStrings": "lib/webparts/getAllusers/loc/{locale}.js"
   }
 }

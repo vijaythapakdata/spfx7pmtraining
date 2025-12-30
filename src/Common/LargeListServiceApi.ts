@@ -29,7 +29,7 @@ public async getLargeListItems(ListName:string):Promise<ILargeListSate[]>{
                 </View>
                 `
             };
-            const response=await sp.web.lists.getByTitle(ListName).getItemsByCAMLQuery(camlQuery,position);
+            const response=await sp.web.lists.getByTitle(ListName).getItemsByCAMLQuery(camlQuery,position);//[a,b,c,d,e]=>4
             console.log(`Batched items ${response.length}`);
             allItems.push(...response.map((item:any)=>({
                 Title:item.Title
