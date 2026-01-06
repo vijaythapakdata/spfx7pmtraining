@@ -15,8 +15,10 @@
       "mpnId": "Undefined-1.20.0"
     },
     "webApiPermissionRequests": [
-      {"resource": "Microsoft Graph","scope": "User.Read.All"}
-    
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.Read.All"
+      }
     ],
     "metadata": {
       "shortDescription": {

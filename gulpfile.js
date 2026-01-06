@@ -12,6 +12,10 @@ build.rig.getTasks = function () {
 
   return result;
 };
+// /* fast-serve */
+// const { addFastServe } = require("spfx-fast-serve-helpers");
+// addFastServe(build);
+// /* end of fast-serve */
 
 build.initialize(require('gulp'));
 build.addSuppression(/Warning/gi);
