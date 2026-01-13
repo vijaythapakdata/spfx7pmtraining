@@ -81,6 +81,22 @@
           "manifest": "./src/webparts/personaCard/PersonaCardWebPart.manifest.json"
         }
       ]
+    },
+    "graph-api-key-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/graphApiKey/GraphApiKeyWebPart.js",
+          "manifest": "./src/webparts/graphApiKey/GraphApiKeyWebPart.manifest.json"
+        }
+      ]
+    },
+    "property-pane-web-part-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/propertyPaneWebPart/PropertyPaneWebPartWebPart.js",
+          "manifest": "./src/webparts/propertyPaneWebPart/PropertyPaneWebPartWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -95,6 +111,8 @@
     "PaginationWebPartStrings": "lib/webparts/pagination/loc/{locale}.js",
     "LargeListWebPartStrings": "lib/webparts/largeList/loc/{locale}.js",
     "GetAllusersWebPartStrings": "lib/webparts/getAllusers/loc/{locale}.js",
-    "PersonaCardWebPartStrings": "lib/webparts/personaCard/loc/{locale}.js"
+    "PersonaCardWebPartStrings": "lib/webparts/personaCard/loc/{locale}.js",
+    "GraphApiKeyWebPartStrings": "lib/webparts/graphApiKey/loc/{locale}.js",
+    "PropertyPaneWebPartWebPartStrings": "lib/webparts/propertyPaneWebPart/loc/{locale}.js"
   }
 }

@@ -20,13 +20,15 @@ export default class FunctionalFormWebPart extends BaseClientSideWebPart<IFuncti
 
 
 
-  public render(): void {
+  public async render(): Promise<void> {
     const element: React.ReactElement<IFunctionalFormProps> = React.createElement(
       FunctionalForm,
       {
       ListName:this.properties.ListName,
       context:this.context,
-      siteurl:this.context.pageContext.web.absoluteUrl
+      siteurl:this.context.pageContext.web.absoluteUrl,
+      departmentoptions:await this.getChoiceFields(this.properties.ListName,this.context.pageContext.web.absoluteUrl,'Department'),
+      genderoptions:await this.getChoiceFields(this.properties.ListName,this.context.pageContext.web.absoluteUrl,'Gender')
       }
     );
 
@@ -61,5 +63,31 @@ export default class FunctionalFormWebPart extends BaseClientSideWebPart<IFuncti
         }
       ]
     };
+  }
+   private async getChoiceFields(ListName:string,siteurl:string,fieldValue:any):Promise<any>{
+    try{
+const response=await fetch(`${siteurl}/_api/web/lists/getbytitle('${ListName}')/fields?$filter=EntityPropertyName eq '${fieldValue}'`,
+
+  {
+    method:'GET',
+    headers:{
+      'Accept':'application/json;odata=nometadata'
+    }
+  }
+);
+if(!response.ok){
+  throw new Error(`Error while reading choice values : ${response.status}-${response.statusText}`);
+};
+const data=await response.json();
+const choices=data.value[0].Choices;
+return choices.map((choice:any)=>({
+  key:choice,
+  text:choice
+}));
+    }
+    catch(err){
+console.error(err);
+return [];
+    }
   }
 }

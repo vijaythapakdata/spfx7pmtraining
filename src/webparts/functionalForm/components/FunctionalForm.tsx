@@ -6,7 +6,9 @@ import {Web} from "@pnp/sp/presets/all";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { Dialog } from '@microsoft/sp-dialog';
-import { PrimaryButton, Slider, TextField } from '@fluentui/react';
+import { PrimaryButton, Slider, TextField ,Dropdown, ChoiceGroup} from '@fluentui/react';
+import {PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+
  const FunctionalForm:React.FC<IFunctionalFormProps>=(props)=>{
   const [formdata,setFormData]=React.useState<IFunctionalFormState>({
     Name:"",
@@ -14,8 +16,29 @@ import { PrimaryButton, Slider, TextField } from '@fluentui/react';
     Age:"",
     FullAddress:"",
     Score:1,
-    Salary:""
+    Salary:"",
+    Manager:[],
+    ManagerId:[],
+    Admin:"",
+    AdminId:0,
+    Department:"",
+    Gender:""
   });
+
+  //get admin
+  const getAdmin=(items:any[])=>{
+    if(items.length>0){
+      setFormData(prev=>({...prev,Admin:items[0].text,AdminId:items[0].id}))
+    }
+    else{
+      setFormData(prev=>({...prev,Admin:"",AdminId:0}))
+    }
+  }
+  //get managers
+  const getManagers=(items:any)=>{
+    setFormData(prev=>({...prev,Manager:items.map((i:any)=>i.text)}));
+     setFormData(prev=>({...prev,ManagerId:items.map((i:any)=>i.id)}));
+  }
   //create form
 
   const createform=async()=>{
@@ -32,7 +55,11 @@ const item=await listName.items.add({
   Age:parseInt(formdata.Age),
   Address:formdata.FullAddress,
   Score:formdata.Score,
-  Salary:parseFloat(formdata.Salary)
+  Salary:parseFloat(formdata.Salary),
+  AdminId:formdata.AdminId,
+  ManagerId:{results:formdata.ManagerId},
+  Department:formdata.Department,
+  Gender:formdata.Gender
 });
 Dialog.alert("Item created successfully");
 console.log(item);
@@ -42,7 +69,13 @@ setFormData({
     Age:"",
     FullAddress:"",
     Score:1,
-    Salary:""
+    Salary:"",
+     Manager:[],
+    ManagerId:[],
+    Admin:"",
+    AdminId:0,
+     Department:"",
+    Gender:""
 });
     }
     catch(err){
@@ -83,6 +116,44 @@ console.log(err);
     value={formdata.Score}
     step={1}
     onChange={(val)=>handleChange("Score",val)}
+    />
+    {/* Peoplepicker */}
+    <PeoplePicker
+    context={props.context as any}
+    titleText="Admin"
+    personSelectionLimit={1}
+    showtooltip={true}
+    onChange={getAdmin}
+    principalTypes={[PrincipalType.User]}
+    resolveDelay={1000} 
+    ensureUser={true}
+    webAbsoluteUrl={props.siteurl}
+    defaultSelectedUsers={[formdata.Admin?formdata.Admin:'']}
+    />
+    <PeoplePicker
+    context={props.context as any}
+    titleText="Manager"
+    personSelectionLimit={2}
+    showtooltip={true}
+    onChange={getManagers}
+    principalTypes={[PrincipalType.User]}
+    resolveDelay={1000} 
+    ensureUser={true}
+    webAbsoluteUrl={props.siteurl}
+    defaultSelectedUsers={formdata.Manager}
+    />
+    {/* Dropdown & ChoiceGroup */}
+    <Dropdown
+    label='Department'
+    options={props.departmentoptions}
+    selectedKey={formdata.Department}
+    onChange={(_,options)=>handleChange("Department",options?.key as string)}
+    />
+     <ChoiceGroup
+    label='Gender'
+    options={props.genderoptions}
+    selectedKey={formdata.Gender}
+    onChange={(_,options)=>handleChange("Gender",options?.key as string)}
     />
      <TextField
     label='Full Address'

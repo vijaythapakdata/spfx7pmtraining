@@ -8,30 +8,28 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
-import * as strings from 'PersonaCardWebPartStrings';
-import PersonaCard from './components/PersonaCard';
-import { IPersonaCardProps } from './components/IPersonaCardProps';
-import {MSGraphClientV3} from "@microsoft/sp-http";
-export interface IPersonaCardWebPartProps {
+import * as strings from 'GraphApiKeyWebPartStrings';
+import GraphApiKey from './components/GraphApiKey';
+import { IGraphApiKeyProps } from './components/IGraphApiKeyProps';
+
+export interface IGraphApiKeyWebPartProps {
   description: string;
 }
 
-export default class PersonaCardWebPart extends BaseClientSideWebPart<IPersonaCardWebPartProps> {
+export default class GraphApiKeyWebPart extends BaseClientSideWebPart<IGraphApiKeyWebPartProps> {
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
-  public async render(): Promise<void> {
-    const graph:MSGraphClientV3=await this.context.msGraphClientFactory.getClient('3');
-    const element: React.ReactElement<IPersonaCardProps> = React.createElement(
-      PersonaCard,
+  public render(): void {
+    const element: React.ReactElement<IGraphApiKeyProps> = React.createElement(
+      GraphApiKey,
       {
         description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName,
-        graphClient:graph
+        userDisplayName: this.context.pageContext.user.displayName
       }
     );
 
@@ -120,7 +118,4 @@ export default class PersonaCardWebPart extends BaseClientSideWebPart<IPersonaCa
       ]
     };
   }
-  //get choice values
-
- 
 }
