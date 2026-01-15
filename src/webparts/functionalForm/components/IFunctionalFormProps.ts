@@ -6,4 +6,6 @@ export interface IFunctionalFormProps {
  context:WebPartContext;
  departmentoptions:any;
   genderoptions:any;
+  cityoptions:any;
+  skillsoptions:any;
 }

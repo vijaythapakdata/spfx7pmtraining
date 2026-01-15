@@ -28,7 +28,9 @@ export default class FunctionalFormWebPart extends BaseClientSideWebPart<IFuncti
       context:this.context,
       siteurl:this.context.pageContext.web.absoluteUrl,
       departmentoptions:await this.getChoiceFields(this.properties.ListName,this.context.pageContext.web.absoluteUrl,'Department'),
-      genderoptions:await this.getChoiceFields(this.properties.ListName,this.context.pageContext.web.absoluteUrl,'Gender')
+      genderoptions:await this.getChoiceFields(this.properties.ListName,this.context.pageContext.web.absoluteUrl,'Gender'),
+      skillsoptions:await this.getChoiceFields(this.properties.ListName,this.context.pageContext.web.absoluteUrl,'Skills'),
+      cityoptions:await this.getLookup()
       }
     );
 
@@ -88,6 +90,31 @@ return choices.map((choice:any)=>({
     catch(err){
 console.error(err);
 return [];
+    }
+  }
+  //get lookup
+  private async getLookup():Promise<any>{
+    try{
+const response=await fetch(`${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('Cities')/items?$select=Title,ID`,
+  {
+    method:'GET',
+    headers:{
+      'Accept':'application/json;odata=nometadata'
+    }
+  }
+);
+if(!response.ok){
+  throw new Error(`Error while reading lookup values: ${response.status}-${response.statusText}`);
+};
+const data=await response.json();
+return data.value.map((city:{Title:string,ID:string})=>({
+  key:city.ID,
+  text:city.Title
+}));
+    }
+    catch(err){
+console.error(err);
+return[];
     }
   }
 }

@@ -6,8 +6,10 @@ import {Web} from "@pnp/sp/presets/all";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { Dialog } from '@microsoft/sp-dialog';
-import { PrimaryButton, Slider, TextField ,Dropdown, ChoiceGroup} from '@fluentui/react';
+import { PrimaryButton, Slider, TextField ,Dropdown, ChoiceGroup, IDropdownOption,DatePicker} from '@fluentui/react';
 import {PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+import { DatePickerStrings, FormateDate } from '../../../DatePickerFiles/DateValue';
+// import { DatePicker } from 'antd';
 
  const FunctionalForm:React.FC<IFunctionalFormProps>=(props)=>{
   const [formdata,setFormData]=React.useState<IFunctionalFormState>({
@@ -22,7 +24,10 @@ import {PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeopleP
     Admin:"",
     AdminId:0,
     Department:"",
-    Gender:""
+    Gender:"",
+    Skills:[],
+    City:"",
+    DOB:null
   });
 
   //get admin
@@ -38,6 +43,13 @@ import {PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeopleP
   const getManagers=(items:any)=>{
     setFormData(prev=>({...prev,Manager:items.map((i:any)=>i.text)}));
      setFormData(prev=>({...prev,ManagerId:items.map((i:any)=>i.id)}));
+  }
+
+  ///get skills options
+  const getSKillsOptions=(event:React.ChangeEvent<HTMLInputElement>,options:IDropdownOption):void=>{
+    //[q,b,c,d]=[c,d]
+    const selectedkey=options.selected?[...formdata.Skills,options?.key as string]:formdata.Skills.filter((key)=>key!=options.key);
+    setFormData(prev=>({...prev,Skills:selectedkey}));
   }
   //create form
 
@@ -59,7 +71,10 @@ const item=await listName.items.add({
   AdminId:formdata.AdminId,
   ManagerId:{results:formdata.ManagerId},
   Department:formdata.Department,
-  Gender:formdata.Gender
+  Gender:formdata.Gender,
+  Skills:{results:formdata.Skills},
+  CityId:formdata.City,
+  DOB:new Date(formdata.DOB)
 });
 Dialog.alert("Item created successfully");
 console.log(item);
@@ -75,7 +90,10 @@ setFormData({
     Admin:"",
     AdminId:0,
      Department:"",
-    Gender:""
+    Gender:"",
+    Skills:[],
+    City:"",
+        DOB:null
 });
     }
     catch(err){
@@ -145,6 +163,7 @@ console.log(err);
     {/* Dropdown & ChoiceGroup */}
     <Dropdown
     label='Department'
+       placeholder='--select--'
     options={props.departmentoptions}
     selectedKey={formdata.Department}
     onChange={(_,options)=>handleChange("Department",options?.key as string)}
@@ -154,6 +173,29 @@ console.log(err);
     options={props.genderoptions}
     selectedKey={formdata.Gender}
     onChange={(_,options)=>handleChange("Gender",options?.key as string)}
+    />
+     <Dropdown
+    label='City'
+       placeholder='--select--'
+    options={props.cityoptions}
+    selectedKey={formdata.City}
+    onChange={(_,options)=>handleChange("City",options?.key as string)}
+    />
+    {/* Mulitselect dropdown */}
+     <Dropdown
+    label='SKills'
+    placeholder='--select--'
+    options={props.skillsoptions}
+    defaultSelectedKeys={formdata.Skills}
+   onChange={getSKillsOptions}
+   multiSelect
+    />
+    {/* Date Picker */}
+    <DatePicker
+    label='Date of Birth'
+    strings={DatePickerStrings}
+    formatDate={FormateDate}
+    onSelectDate={(e)=>setFormData(prev=>({...prev,DOB:e}))}
     />
      <TextField
     label='Full Address'

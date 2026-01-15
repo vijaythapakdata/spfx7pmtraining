@@ -11,4 +11,7 @@ export interface IFunctionalFormState{
     ManagerId:any[];
     Gender:string;
     Department:string;
+    City:string;
+    Skills:any[];
+    DOB:any;
 }
